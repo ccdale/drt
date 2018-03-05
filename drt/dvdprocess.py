@@ -2,6 +2,7 @@
 DVDProcess - process on disk DVDs with HandBrake
 """
 import os
+import time
 import logging
 from drt.configfile import ConfigFile
 from drt.filesystem import FileSystem
@@ -110,10 +111,42 @@ class DVDProcess(object):
             ret = val
         return ret
 
+    def addZero(self, num):
+        ret = "{}".format(num)
+        if num < 10:
+            ret = "0" + ret
+        return ret
+
+    def hms(self, secs):
+        rem = secs % 3600
+        hrs = int(secs / 3600)
+        mins = int(rem / 60)
+        osecs = rem % 60
+        hrs = addZero(hrs)
+        mins = addZero(mins)
+        osecs = addZero(osecs)
+        return "{}:{}:{}".format(hrs, mins, osecs)
+
     def run(self):
+        runstart = int(time.time())
+        tdur = 0
         if len(self.dvds) > 0:
             for dvd in self.dvds:
+                dtdur = 0
+                dstart = int(time.time())
                 for trk in dvd.alltracks:
                     if trk.number in dvd.selected:
+                        dtdur += trk.dursecs
+                        trkstart = int(time.time())
                         dvd.makeMp4(trk)
+                        trkstop = int(time.time())
+                        trktime = trkstop - trkstart
+                        pc = (trk.dursecs / trktime) * 100
+                        print("track {} took {} ({}) {}% speedup".format(trk.number, self.hms(trk.time), trk.duration, pc))
+                tdur += dtdur
+                dstop = int(time.time())
+                dtime = dstop - dstart
+                print("dvd {} took {}".format(dvd.name, self.hms(dtime)))
                 os.rename(dvd.path, "{}/{}".format(self.processed, dvd.name))
+        runstop = int(time.time())
+        print("process run took {}".format(self.hms(runstop - runstart)))

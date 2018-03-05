@@ -94,7 +94,7 @@ class DVDInfo(object):
                 xos.append(track)
         return xos
 
-    def hms(self, xhms):
+    def secs(self, xhms):
         hours, mins, secs = xhms.split(":")
         s = int(hours) * 3600
         s += (int(mins) * 60)
@@ -112,7 +112,7 @@ class DVDInfo(object):
             cnum = m.group(1)
             blocks = m.group(2)
             duration = m.group(3)
-            dursecs = self.hms(duration)
+            dursecs = self.secs(duration)
             ret = [cnum, blocks, duration, dursecs]
         return ret
 
@@ -144,7 +144,7 @@ class DVDInfo(object):
         for line in bl:
             if line.startswith("+ duration"):
                 duration = self.grabDuration(line)
-                dursecs = self.hms(duration)
+                dursecs = self.secs(duration)
             elif line.startswith("+ chapters"):
                 inchap = True
                 inaudio = insubt = False
