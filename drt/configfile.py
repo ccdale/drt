@@ -12,9 +12,17 @@ class ConfigFile(object):
     def __init__(self):
         defaultcfg = {
                 "device": "/dev/sr0",
-                "outputdir": "~/Videos/dvd/incoming",
-                "tmpdir": "~/Videos/dvd/bare",
-                "dvdoutput": "~/Videos/dvd/output"
+                "rootdir": "~/Videos/dvd",
+                "handbrake": "/usr/bin/HandBrakeCLI",
+                "dvdbackup": "/usr/bin/dvdbackup",
+                "eject": "/usr/bin/eject"
+                }
+        defaultnames = {
+                "dvdoutput": "output",
+                "outputdir": "incoming",
+                "tmpdir": "bare",
+                "completeddir": "processed",
+                "saveddir": "saved"
                 }
         fs = FileSystem()
         self.cfgfn = fs.absPath("~/.config/drt.yaml")
@@ -24,10 +32,14 @@ class ConfigFile(object):
             self.cfg = defaultcfg
             log.debug("writing out config file {}".format(self.cfgfn))
             self.writeConfig()
-        keys = ["outputdir", "tmpdir", "dvdoutput"]
+        self.cfg["rootdir"] = fs.absPath(self.cfg["rootdir"])
+        keys = ["outputdir", "tmpdir", "dvdoutput", "completeddir", "saveddir"]
         for key in keys:
-            tmp = fs.absPath(self.cfg[key])
-            self.cfg[key] = tmp
+            if key not in self.cfg:
+                self.cfg[key] = self.cfg["rootdir"] + "/{}".format(defaultnames[key])
+            else:
+                tmp = fs.absPath(self.cfg[key])
+                self.cfg[key] = tmp
 
     def findConfig(self, searchfns):
         fs = FileSystem()
