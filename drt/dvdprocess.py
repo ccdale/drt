@@ -16,15 +16,30 @@ class DVDProcess(object):
         cfgfn = ConfigFile()
         cfg = cfgfn.getCfg()
         fs = FileSystem()
-        self.incomingdir = fs.absPath(cfg["outputdir"])
-        self.outputdir = fs.absPath(cfg["dvdoutput"])
-        self.processed = fs.absPath(cfg["completeddir"])
-        self.dvdsavedir = fs.absPath(cfg["saveddir"])
+        self.rootdir = cfg["rootdir"]
+        self.incomingdir = cfg["outputdir"]
+        self.outputdir = cfg["dvdoutput"]
+        self.processed = cfg["completeddir"]
+        self.dvdsavedir = cfg["saveddir"]
         self.logdir = os.path.join(self.outputdir, "logs")
         self.infodir = os.path.join(self.outputdir, "info")
+        self.makeDirs()
         self.handbrake = cfg["handbrake"]
         self.dvds = []
         self.saved = []
+
+    def makeDirs(self):
+        self.makeDir(self.rootdir)
+        self.makeDir(self.incomingdir)
+        self.makeDir(self.outputdir)
+        self.makeDir(self.processed)
+        self.makeDir(self.dvdsavedir)
+        self.makeDir(self.logdir)
+        self.makeDir(self.infodir)
+
+    def makeDir(self, dir):
+        if not os.path.isdir(dir):
+            os.mkdir(dir, 0o750)
 
     # def loadOrRead(self):
     #     val = self.askMe("(l)oad saved DVDs or (r)ead new", "r")
