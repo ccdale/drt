@@ -122,9 +122,9 @@ class DVDProcess(object):
         hrs = int(secs / 3600)
         mins = int(rem / 60)
         osecs = rem % 60
-        hrs = addZero(hrs)
-        mins = addZero(mins)
-        osecs = addZero(osecs)
+        hrs = self.addZero(hrs)
+        mins = self.addZero(mins)
+        osecs = self.addZero(osecs)
         return "{}:{}:{}".format(hrs, mins, osecs)
 
     def run(self):
@@ -141,8 +141,7 @@ class DVDProcess(object):
                         dvd.makeMp4(trk)
                         trkstop = int(time.time())
                         trktime = trkstop - trkstart
-                        pc = (trk.dursecs / trktime) * 100
-                        print("track {} took {} ({}) {}% speedup".format(trk.number, self.hms(trk.time), trk.duration, pc))
+                        print("track {} took {}".format(trk.number, self.hms(trktime)))
                 tdur += dtdur
                 dstop = int(time.time())
                 dtime = dstop - dstart
