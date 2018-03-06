@@ -55,6 +55,10 @@ class FileSystem(object):
         for key in cfgnames:
             self.makePath(cfg[key])
 
+    def rename(self, src, dest):
+        p = Path(src)
+        p.rename(dest)
+
     def askMe(self, q, default):
         ret = default
         val = input("{} ({}) > ".format(q, default))
