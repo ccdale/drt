@@ -26,13 +26,16 @@ class FileSystem(object):
             return False
 
     def makePath(self, pn):
-        p = Path(pn)
-        ret = False
-        try:
-            p.mkdir(mode=0o755, parents=True, exist_ok=True)
+        if not self.dirExists(pn):
+            p = Path(pn)
+            ret = False
+            try:
+                p.mkdir(mode=0o755, parents=True, exist_ok=True)
+                ret = True
+            except Exception as e:
+                print("an error occurred making the path {}, exception was {}".format(pn, e))
+        else:
             ret = True
-        except Exception as e:
-            print("an error occurred making the path {}, exception was {}".format(pn, e))
         return ret
 
     def makeFilePath(self, fn):
@@ -47,3 +50,14 @@ class FileSystem(object):
 
     def absPath(self, fn):
         return os.path.abspath(os.path.expanduser(fn))
+
+    def makeConfigDirs(self, cfg, cfgnames):
+        for key in cfgnames:
+            self.makePath(cfg[key])
+
+    def askMe(self, q, default):
+        ret = default
+        val = input("{} ({}) > ".format(q, default))
+        if len(val) > 0:
+            ret = val
+        return ret

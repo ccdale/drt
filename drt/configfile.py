@@ -22,7 +22,9 @@ class ConfigFile(object):
                 "outputdir": "incoming",
                 "tmpdir": "bare",
                 "completeddir": "processed",
-                "saveddir": "saved"
+                "saveddir": "saved",
+                "infodir": "info",
+                "logsdir": "logs"
                 }
         fs = FileSystem()
         self.cfgfn = fs.absPath("~/.config/drt.yaml")
@@ -40,6 +42,17 @@ class ConfigFile(object):
             else:
                 tmp = fs.absPath(self.cfg[key])
                 self.cfg[key] = tmp
+        keys = ["logsdir", "infodir"]
+        for key in keys:
+            if key not in self.cfg:
+                self.cfg[key] = self.cfg["outputdir"] + "/{}".format(defaultnames[key])
+            else:
+                tmp = fs.absPath(self.cfg[key])
+                self.cfg[key] = tmp
+        cfgnames = ["rootdir"]
+        for key in defaultnames:
+            cfgnames.append(key)
+        fs.makeConfigDirs(self.cfg, cfgnames)
 
     def findConfig(self, searchfns):
         fs = FileSystem()
