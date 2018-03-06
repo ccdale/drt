@@ -40,7 +40,7 @@ class DVDProcess(object):
     def readSavedDir(self):
         with os.scandir(self.dvdsavedir) as pt:
             for item in pt:
-                if os.path.isdir(item.path):
+                if self.fs.dirExists(item.path):
                     self.saved.append(SavedDvd(item.name, item.path, self.incomingdir, self.processed))
 
     def showSaved(self):
@@ -84,4 +84,4 @@ class DVDProcess(object):
                 for trk in dvd.alltracks:
                     if trk.number in dvd.selected:
                         dvd.makeMp4(trk)
-                os.rename(dvd.path, "{}/{}".format(self.processed, dvd.name))
+                self.fs.rename(dvd.path, "{}/{}".format(self.processed, dvd.name))
