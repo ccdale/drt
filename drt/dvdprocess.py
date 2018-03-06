@@ -16,25 +16,17 @@ class DVDProcess(object):
     def __init__(self):
         cfgfn = ConfigFile()
         cfg = cfgfn.getCfg()
-        fs = FileSystem()
-        self.incomingdir = fs.absPath(cfg["outputdir"])
-        self.outputdir = fs.absPath(cfg["dvdoutput"])
-        self.processed = fs.absPath(cfg["completeddir"])
-        self.dvdsavedir = fs.absPath(cfg["saveddir"])
-        self.logdir = os.path.join(self.outputdir, "logs")
-        self.infodir = os.path.join(self.outputdir, "info")
+        self.fs = FileSystem()
+        self.rootdir = cfg["rootdir"]
+        self.incomingdir = cfg["outputdir"]
+        self.outputdir = cfg["dvdoutput"]
+        self.processed = cfg["completeddir"]
+        self.dvdsavedir = cfg["saveddir"]
+        self.logdir = cfg["logsdir"]
+        self.infodir = cfg["infodir"]
         self.handbrake = cfg["handbrake"]
         self.dvds = []
         self.saved = []
-
-    # def loadOrRead(self):
-    #     val = self.askMe("(l)oad saved DVDs or (r)ead new", "r")
-    #     if len(val) == 0:
-    #         self.readIncomingDir()
-    #     elif val == "r":
-    #         self.readIncomingDir()
-    #     elif val == "l":
-    #         self.loadSaved()
 
     def processSaved(self, sname):
         if len(self.saved) == 0:
@@ -46,26 +38,10 @@ class DVDProcess(object):
                 self.dvds.append(saved.dvd)
                 saved.moveToIncoming()
 
-    # def loadSaved(self):
-    #     self.readSavedDir()
-    #     self.showSaved()
-    #     dval = self.askMe("Enter the name of the DVD to process", "{}".format(self.saved[0].name))
-    #     if len(dval) == 0:
-    #         dname = self.saved[0].name
-    #     else:
-    #         dname = dval
-    #     for saved in self.saved:
-    #         if saved.name == dname:
-    #             saved.dvd.showMe()
-    #             saved.dvd.showTracks()
-    #             self.dvds.append(saved.dvd)
-    #             os.rename(saved.path, "{}/{}".format(self.incomingdir, saved.name))
-    #             os.rename(saved.pickled, "{}/{}".format(self.processed, os.path.basename(saved.pickled)))
-
     def readSavedDir(self):
         with os.scandir(self.dvdsavedir) as pt:
             for item in pt:
-                if os.path.isdir(item.path):
+                if self.fs.dirExists(item.path):
                     self.saved.append(SavedDvd(item.name, item.path, self.incomingdir, self.processed))
 
     def showSaved(self):
@@ -82,7 +58,7 @@ class DVDProcess(object):
                 while not instone:
                     dvd.showMe()
                     dvd.showTracks()
-                    val = self.askMe("edit [d]vd, edit [t]racks, [s]ave, s[k]ip, [o]k", "o")
+                    val = self.fs.askMe("edit [d]vd, edit [t]racks, [s]ave, s[k]ip, [o]k", "o")
                     if len(val) == 0:
                         val="o"
                     if val == "o":
@@ -103,13 +79,6 @@ class DVDProcess(object):
                     else:
                         dvd.editMe()
 
-
-    def askMe(self, q, default):
-        ret = default
-        val = input("{} ({}) > ".format(q, default))
-        if len(val) > 0:
-            ret = val
-        return ret
 
     def addZero(self, num):
         ret = "{}".format(num)
@@ -146,6 +115,6 @@ class DVDProcess(object):
                 dstop = int(time.time())
                 dtime = dstop - dstart
                 print("dvd {} took {}".format(dvd.name, self.hms(dtime)))
-                os.rename(dvd.path, "{}/{}".format(self.processed, dvd.name))
+                self.fs.rename(dvd.path, "{}/{}".format(self.processed, dvd.name))
         runstop = int(time.time())
         print("process run took {}".format(self.hms(runstop - runstart)))

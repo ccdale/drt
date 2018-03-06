@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import os
 import sys
@@ -39,27 +39,25 @@ def main(arg):
         cfg = cfgfn.getCfg()
         srcdev=cfg["device"]
         log.debug("src device: {}".format(srcdev))
-        outputdir = os.path.expanduser(cfg["outputdir"])
+        outputdir = cfg["outputdir"]
         fs = FileSystem()
-        if not fs.makePath(outputdir):
-            log.error("failed to make output dir: '{}'".format(outputdir))
+        tmpdir = cfg["tmpdir"]
+        dvdname = os.path.basename(arg[1]).replace(" ", "_")
+        tmp = fs.askMe("Dvd Name", dvdname)
+        if len(tmp) > 0:
+            dvdname = tmp
+        log.info("Copying dvd {} to {}".format(dvdname, tmpdir))
+        exitcode = copydvd(cfg["dvdbackup"], cfg["device"], tmpdir, dvdname)
+        if exitcode != 0:
+            log.error("error copying dvd, sorry")
+            fs.askMe("exit", "")
         else:
-            tmpdir = os.path.expanduser(cfg["tmpdir"])
-            if not fs.makePath(tmpdir):
-                log.error("failed to make tmp dir: '{}'".format(tmpdir))
-            else:
-                dvdname = os.path.basename(arg[1]).replace(" ", "_")
-                log.info("Copying dvd {} to {}".format(dvdname, tmpdir))
-                exitcode = copydvd(cfg["dvdbackup"], cfg["device"], tmpdir, dvdname)
-                if exitcode != 0:
-                    log.error("error copying dvd, sorry")
-                else:
-                    tmpname = tmpdir + "/" + dvdname
-                    newname = outputdir + "/" + dvdname
-                    log.info("Moving dvd to output dir")
-                    os.rename(tmpname, newname)
-            log.info("CopyDVD: ejecting disc.")
-            os.system("{} {}".format(cfg["eject"], cfg["device"]))
+            tmpname = tmpdir + "/" + dvdname
+            newname = outputdir + "/" + dvdname
+            log.info("Moving dvd to output dir")
+            fs.rename(tmpname, newname)
+        log.info("CopyDVD: ejecting disc.")
+        os.system("{} {}".format(cfg["eject"], cfg["device"]))
     return exitcode
 
 if __name__=="__main__":
