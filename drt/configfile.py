@@ -45,7 +45,7 @@ class ConfigFile(object):
         keys = ["logsdir", "infodir"]
         for key in keys:
             if key not in self.cfg:
-                self.cfg[key] = self.cfg["outputdir"] + "/{}".format(defaultnames[key])
+                self.cfg[key] = self.cfg["dvdoutput"] + "/{}".format(defaultnames[key])
             else:
                 tmp = fs.absPath(self.cfg[key])
                 self.cfg[key] = tmp
