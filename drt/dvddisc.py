@@ -186,11 +186,13 @@ class DVDDisc(object):
         if track.burnin:
             cmd += "{} ".format(burninopts)
         fname = "{}/{}".format(self.outputdir, track.fname)
+        tname = track.fname
         if len(track.title):
+            tname = "{} {}".format(track.fname, track.title)
             fname += " {}".format(track.title)
         fname += ".m4v"
-        cmd += "-o '{}'".format(fname)
-        logfile = self.logdir + "/{}.handbrake.log".format(self.name)
+        cmd += "-o \"{}\"".format(fname)
+        logfile = self.logdir + "/{}.handbrake.log".format(tname)
         cmd += " >{} 2>&1".format(logfile)
         print("processing track {}".format(track.number))
         print("cmd: {}".format(cmd))
