@@ -193,7 +193,7 @@ class DVDDisc(object):
         fname += ".m4v"
         cmd += "-o \"{}\"".format(fname)
         logfile = self.logdir + "/{}.handbrake.log".format(tname)
-        cmd += " >{} 2>&1".format(logfile)
+        cmd += " >\"{}\" 2>&1".format(logfile)
         print("processing track {}".format(track.number))
         print("cmd: {}".format(cmd))
         os.system(cmd)
