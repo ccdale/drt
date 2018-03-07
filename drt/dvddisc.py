@@ -162,7 +162,10 @@ class DVDDisc(object):
         return [alang, slang, burnin]
 
     def getSeriesTag(self):
-        return "{} S0{}".format(self.seriesname, self.seriesid) if self.seriesid < 10 else "{} S{}".format(self.seriesname, self.seriesid)
+        if self.seriesid == -1:
+            return self.seriesname
+        else:
+            return "{} S0{}".format(self.seriesname, self.seriesid) if self.seriesid < 10 else "{} S{}".format(self.seriesname, self.seriesid)
 
     def setStartingEpisodeNumber(self, episodenum):
         self.startepisode = int(episodenum)
@@ -173,8 +176,11 @@ class DVDDisc(object):
         stag = self.getSeriesTag()
         for track in self.alltracks:
             if track.number in self.selected:
-                track.setEpisodeNumber(self.currentepisode)
-                track.fname = "{}{}".format(stag, track.fname)
+                if self.seriesid == -1:
+                    track.fname = stag
+                else:
+                    track.setEpisodeNumber(self.currentepisode)
+                    track.fname = "{}{}".format(stag, track.fname)
                 self.currentepisode += 1
             else:
                 track.fname = "{} {}".format(self.name, track.number)
