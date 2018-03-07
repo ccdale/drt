@@ -8,6 +8,8 @@ transcode the video.
 
 DRT is optimised for TV series based DVD ripping.
 
+There is a config file at `~/.config/drt.yaml`.
+
 ## dvdcopy ##
 A small python program that uses dvdbackup to copy the DVD to your hard disc.
 When run, it asks for a name for the DVD.  This is how it will be known to `dvdprocess`.
