@@ -7,11 +7,12 @@ from drt.filesystem import FileSystem
 from drt.filesystem import FileNotFound
 
 class DVDInfo(object):
-    def __init__(self, path):
+    def __init__(self, path, shortlen=300):
         self.dre = re.compile(r'duration:? (\d{2}:\d{2}:\d{2})')
         self.cre = re.compile(r'\+ (\d+): cells.*, (\d+).*, duration (\d{2}:\d{2}:\d{2})')
         self.are = re.compile(r'\+ (\d+), (\w+) .*')
         self.sre = re.compile(r'\+ (\d+), (\w+) .*')
+        self.shortlen = shortlen
         fs = FileSystem()
         if not fs.fileExists(path):
             raise(FileNotFound(path))
@@ -90,7 +91,7 @@ class DVDInfo(object):
     def removeShorts(self):
         xos=[]
         for track in self.alltracks:
-            if track["data"]["dursecs"] >= 300:
+            if track["data"]["dursecs"] >= self.shortlen:
                 xos.append(track)
         return xos
 

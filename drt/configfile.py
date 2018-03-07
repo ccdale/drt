@@ -15,7 +15,8 @@ class ConfigFile(object):
                 "rootdir": "~/Videos/dvd",
                 "handbrake": "/usr/bin/HandBrakeCLI",
                 "dvdbackup": "/usr/bin/dvdbackup",
-                "eject": "/usr/bin/eject"
+                "eject": "/usr/bin/eject",
+                "shortrack": 300
                 }
         defaultnames = {
                 "dvdoutput": "output",

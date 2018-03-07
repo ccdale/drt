@@ -25,6 +25,7 @@ class DVDProcess(object):
         self.logdir = cfg["logsdir"]
         self.infodir = cfg["infodir"]
         self.handbrake = cfg["handbrake"]
+        self.shortlen = cfg["shorttrack"]
         self.dvds = []
         self.saved = []
 
@@ -53,7 +54,8 @@ class DVDProcess(object):
     def readIncomingDir(self):
         with os.scandir(self.incomingdir) as pt:
             for item in pt:
-                dvd = DVDDisc(item.name, item.path, self.infodir, self.outputdir, self.handbrake, self.dvdsavedir)
+                dvd = DVDDisc(item.name, item.path, self.infodir, self.outputdir,
+                        self.handbrake, self.dvdsavedir, shortlen=self.shortlen)
                 instone = False
                 while not instone:
                     dvd.showMe()

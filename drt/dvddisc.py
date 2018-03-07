@@ -13,7 +13,7 @@ log = logging.getLogger(__name__)
 
 
 class DVDDisc(object):
-    def __init__(self, name, path, infodir, outputdir, handbrake, savedir):
+    def __init__(self, name, path, infodir, outputdir, handbrake, savedir, shortlen=300):
         self.name = name
         self.startepisode = 1
         self.seriesid = 1
@@ -26,6 +26,7 @@ class DVDDisc(object):
         self.handbrake = handbrake
         self.savepath = savedir
         self.savefn = "{}/{}.saved".format(self.savepath, self.name)
+        self.shortlen = shortlen
         self.makeInfo()
 
     def saveMe(self):
@@ -140,7 +141,7 @@ class DVDDisc(object):
         cmd = "{} -i {} -t 0 >{} 2>&1".format(self.handbrake, self.path, self.infofn)
         os.system(cmd)
         self.alltracks = []
-        xinfo = DVDInfo(self.infofn)
+        xinfo = DVDInfo(self.infofn, shortlen=self.shortlen)
         for track in xinfo.alltracks:
             trk = DVDTrack(track)
             trk.alang, trk.slang, trk.burnin = self.checkLang(trk)
