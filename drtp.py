@@ -108,22 +108,3 @@ if len(args["--saved"]) > 0:
     for sname in snames:
         dvdp.processSaved(sname)
     dvdp.run()
-
-# def main(arg):
-#     exitcode = 0
-#     dvdp = DVDProcess()
-#     dvdp.loadOrRead()
-#     cn = len(dvdp.dvds)
-#     msg = "found 1 DVD to process" if cn == 1 else "found {} DVDs to process".format(cn)
-#     log.info(msg)
-#     if cn > 0:
-#         yes = True
-#         yn = dvdp.askMe("Start", "y")
-#         if len(yn) > 0:
-#             if yn not in ["y", "Y"]:
-#                 yes = False
-#         if yes:
-#             dvdp.run()
-#
-# if __name__=="__main__":
-#     sys.exit(main(sys.argv))
