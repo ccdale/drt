@@ -14,7 +14,7 @@ When run, it asks for a name for the DVD.  This is how it will be known to `dvdp
 
 ## dvdprocess ##
 dvdprocess allows you to set a title for the video files, with automatic series and episode numbering.
-
+The Series/Episode tag can be removed by setting the Series number to -1.
 ```
 Usage:
     dvdprocess --help
