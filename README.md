@@ -1,7 +1,4 @@
 # DRT #
-*Note*: until this is packaged the names `dvdcopy` and `dvdprocess` do not exist, the python scripts `drt.py` and
-`drtp.py` are what they will become.
-
 DRT is a command line based DVD copying and ripping management program. It requires
 [dvdbackup](http://dvdbackup.sourceforge.net/) to copy the DVD to disc and [HandBrakeCLI](https://handbrake.fr/) to
 transcode the video.
