@@ -17,6 +17,6 @@
 #     along with drt.  If not, see <http://www.gnu.org/licenses/>.
 majorv = 1
 minorv = 0
-buildv = 14
+buildv = 15
 versionl = (majorv, minorv, buildv)
 __version__ = ".".join(str(x) for x in versionl)
