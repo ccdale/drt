@@ -6,3 +6,9 @@ dev:
 	git add $(vfn)
 	git commit -m "bumping build version"
 	pip install -e .
+
+sdist:
+	python setup.py sdist
+
+bdist:
+	python setup.py bdist_wheel
