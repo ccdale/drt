@@ -56,6 +56,7 @@ setup(
             ],
         keywords = "dvd copying ripping conversion",
         packages = ["drt"],
+        install_requires=["docopt"],
         project_urls = {
             "Source": "https://github.com/ccdale/drt",
             "Bug Reports": "https://github.com/ccdale/drt/issues"
