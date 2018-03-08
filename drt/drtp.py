@@ -22,6 +22,7 @@ dvdprocess command module.
 part of the drt package.
 
 Usage:
+    dvdprocess
     dvdprocess --help
     dvdprocess --version
     dvdprocess --allsaved
@@ -39,7 +40,8 @@ Options:
     -A --allsaved           process all saved DVDs.
     -h --help               this help message.
     -l --listsaved          list all saved DVDs and exit.
-    -r --incoming           read the incoming dir. and build the DVD tree for editing.
+    -r --incoming           read the incoming dir. and build the DVD tree for editing. Default action
+                            if no options supplied.
     -s --saved SAVEDNAME    process the saved DVD for SAVEDNAME, can be repeated.
     -S --first              process the first saved DVD and exit.
     --version               version info.
@@ -82,35 +84,28 @@ log.addHandler(terminal)
 def main():
     args = docopt(__doc__, version=__version__)
     log.debug("{}".format(args))
+    dvdp = DVDProcess()
     if args["--allsaved"]:
         # all saved dvds
-        dvdp = DVDProcess()
         dvdp.readSavedDir()
         if len(dvdp.saved) > 0:
             # process them all
             for sdvd in dvdp.saved:
                 dvdp.processSaved(sdvd.name)
             dvdp.run()
-
-    if args["--first"]:
+    elif args["--first"]:
         # first saved dvd
-        dvdp = DVDProcess()
         dvdp.readSavedDir()
         if len(dvdp.saved) > 0:
             dvdp.processSaved(dvdp.saved[0].name)
             dvdp.run()
-
-    if args["--incoming"]:
+    elif args["--incoming"]:
         # read raw dvds
-        dvdp = DVDProcess()
         dvdp.readIncomingDir()
         dvdp.run()
-
-    if args["--listsaved"]:
-        dvdp = DVDProcess()
+    elif args["--listsaved"]:
         dvdp.showSaved()
-
-    if len(args["--saved"]) > 0:
+    elif len(args["--saved"]) > 0:
         # selective process of saved dvds
         # docopt appears to have a bug with multiple items, this mitigates it
         # see https://github.com/docopt/docopt/issues/134
@@ -118,7 +113,6 @@ def main():
         for name in args["--saved"]:
             if name not in snames:
                 snames.append(name)
-        dvdp = DVDProcess()
         for sname in snames:
             dvdp.processSaved(sname)
         dvdp.run()

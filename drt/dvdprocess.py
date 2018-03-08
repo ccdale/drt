@@ -74,9 +74,13 @@ class DVDProcess(object):
                 dvd = DVDDisc(item.name, item.path, self.infodir, self.outputdir,
                         self.handbrake, self.dvdsavedir, shortlen=self.shortlen)
                 instone = False
+                first = True
                 while not instone:
                     dvd.showMe()
                     dvd.showTracks()
+                    if first:
+                        dvd.edittracks()
+                        first = False
                     val = self.fs.askMe("edit [d]vd, edit [t]racks, [s]ave, s[k]ip, [o]k", "o")
                     if len(val) == 0:
                         val="o"
