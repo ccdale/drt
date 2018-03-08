@@ -78,10 +78,10 @@ log.addHandler(syslog)
 terminal = logging.StreamHandler()
 log.addHandler(terminal)
 
-args = docopt(__doc__, version=__version__)
-log.debug("{}".format(args))
 
-def main(args):
+def main():
+    args = docopt(__doc__, version=__version__)
+    log.debug("{}".format(args))
     if args["--allsaved"]:
         # all saved dvds
         dvdp = DVDProcess()
@@ -124,4 +124,4 @@ def main(args):
         dvdp.run()
 
 if __name__=="__main__":
-    sys.exit(main(args))
+    sys.exit(main())
