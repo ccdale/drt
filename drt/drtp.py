@@ -99,10 +99,6 @@ def main():
         if len(dvdp.saved) > 0:
             dvdp.processSaved(dvdp.saved[0].name)
             dvdp.run()
-    elif args["--incoming"]:
-        # read raw dvds
-        dvdp.readIncomingDir()
-        dvdp.run()
     elif args["--listsaved"]:
         dvdp.showSaved()
     elif len(args["--saved"]) > 0:
@@ -115,6 +111,11 @@ def main():
                 snames.append(name)
         for sname in snames:
             dvdp.processSaved(sname)
+        dvdp.run()
+    else:
+        # --incoming | -r is the default action
+        # read raw dvds
+        dvdp.readIncomingDir()
         dvdp.run()
 
 if __name__=="__main__":
