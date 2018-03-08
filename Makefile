@@ -12,3 +12,6 @@ sdist:
 
 bdist:
 	python setup.py bdist_wheel
+
+upload: bdist
+	twine upload --repository testpypi dist/*
