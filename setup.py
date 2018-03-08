@@ -59,5 +59,6 @@ setup(
         project_urls = {
             "Source": "https://github.com/ccdale/drt",
             "Bug Reports": "https://github.com/ccdale/drt/issues"
-            }
+            },
+        python_requires=">=3"
         )
