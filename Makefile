@@ -19,3 +19,6 @@ bdist: sdist
 
 upload: bdist
 	twine upload --repository testpypi dist/*
+
+pypi: bdist
+	twine upload dist/*
