@@ -10,6 +10,21 @@ DRT is optimised for TV series based DVD ripping.
 
 There is a config file at ``~/.config/drt.yaml``.
 
+Installing
+----------
+
+This is still in beta, if you want to test it use a virtualenv and a
+reasonably new version of python3, vis:
+
+::
+
+    # debian based distros (ubuntu etc).
+    mkdir drt
+    cd drt
+    mkvirtualenv --system-site-packages --python=/usr/bin/python3 drt
+    pip install drt
+    dvdprocess -v
+
 dvdcopy
 -------
 
