@@ -3,6 +3,9 @@ DRT is a command line based DVD copying and ripping management program. It requi
 [dvdbackup](http://dvdbackup.sourceforge.net/) to copy the DVD to disc and [HandBrakeCLI](https://handbrake.fr/) to
 transcode the video.
 
+It allows you to setup transcoding of your DVD with meaningful track names for later processing when your computer is
+idle.
+
 DRT is optimised for TV series based DVD ripping.
 
 There is a config file at `~/.config/drt.yaml`.
@@ -18,6 +21,24 @@ mkvirtualenv --system-site-packages --python=/usr/bin/python3 drt
 pip install drt
 dvdprocess -v
 ```
+
+You'll need to create a configuration file at `$HOME/.config/drt.yaml`
+
+```
+# $HOME/.config/drt.yaml
+device: /dev/sr0
+rootdir: ~/Videos/dvd
+dvdoutput: ~/Videos/dvd/output
+outputdir: ~/Videos/dvd/incoming
+tmpdir: ~/Videos/dvd/bare
+completeddir: ~/Videos/dvd/processed
+saveddir: ~/Videos/dvd/saved
+handbrake: /usr/bin/HandBrakeCLI
+dvdbackup: /usr/bin/dvdbackup
+eject: /usr/bin/eject
+shorttrack: 300
+```
+only the keys `device`, `rootdir`, `handbrake`, `dvdbackup` and `shorttrack` are required, the rest are inferred.
 
 ## dvdcopy ##
 A small python program that uses dvdbackup to copy the DVD to your hard disc.
