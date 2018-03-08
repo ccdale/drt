@@ -29,7 +29,7 @@ here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
-long_description = f.read()
+    long_description = f.read()
 
 setup(
         name = "drt",
@@ -60,5 +60,11 @@ setup(
             "Source": "https://github.com/ccdale/drt",
             "Bug Reports": "https://github.com/ccdale/drt/issues"
             },
-        python_requires=">=3"
+        python_requires = ">=3",
+        entry_points ={
+            "console_scripts": [
+                "dvdcopy = drt.py",
+                "dvdprocess = drtp.py"
+                ]
+            }
         )
