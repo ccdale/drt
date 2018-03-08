@@ -1,5 +1,26 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
+#
+# Copyright (c) 2018, Christopher Allison
+#
+#     This file is part of drt.
+#
+#     drt is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+#
+#     drt is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with drt.  If not, see <http://www.gnu.org/licenses/>.
 """
+dvdprocess command module.
+
+part of the drt package.
+
 Usage:
     dvdprocess --help
     dvdprocess --version
@@ -35,18 +56,12 @@ Notes:
 """
 
 
-# import sys
 import logging
 import logging.handlers
 from docopt import docopt
+from drt import __version__
 from drt.dvdprocess import DVDProcess
 
-majorv = 1
-minorv = 0
-buildv = 0
-__version__ = (majorv, minorv, buildv)
-# verstr = "processdvd version "
-verstr = ".".join(str(x) for x in __version__)
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
@@ -63,7 +78,7 @@ log.addHandler(syslog)
 terminal = logging.StreamHandler()
 log.addHandler(terminal)
 
-args = docopt(__doc__, version=verstr)
+args = docopt(__doc__, version=__version__)
 log.debug("{}".format(args))
 
 exitcode = 0

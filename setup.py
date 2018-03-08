@@ -15,8 +15,6 @@
 #
 #     You should have received a copy of the GNU General Public License
 #     along with drt.  If not, see <http://www.gnu.org/licenses/>.
-majorv = 1
-minorv = 0
-buildv = 4
-versionl = (majorv, minorv, buildv)
-__version__ = ".".join(str(x) for x in versionl)
+"""
+setup module for drt application
+"""
