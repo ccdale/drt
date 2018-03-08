@@ -52,7 +52,11 @@ def main():
     outputdir = cfg["outputdir"]
     fs = FileSystem()
     tmpdir = cfg["tmpdir"]
-    tmp = fs.askMe("Dvd Name", "")
+    if len(sys.argv) > 1:
+        dvdname = os.path.basename(sys.argv[1].replace(" ", "_"))
+    else:
+        dvdname = "DVD"
+    tmp = fs.askMe("Dvd Name", dvdname)
     if len(tmp) > 0:
         dvdname = tmp
     log.info("Copying dvd {} to {}".format(dvdname, tmpdir))
