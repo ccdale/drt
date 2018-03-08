@@ -18,3 +18,46 @@
 """
 setup module for drt application
 """
+# Always prefer setuptools over distutils
+from setuptools import setup, find_packages
+# To use a consistent encoding
+from codecs import open
+from os import path
+from drt import __version__
+
+here = path.abspath(path.dirname(__file__))
+
+# Get the long description from the README file
+with open(path.join(here, 'README.md'), encoding='utf-8') as f:
+long_description = f.read()
+
+setup(
+        name = "drt",
+        version = __version__,
+        description = "dvd copying and ripping management tool",
+        long_description = long_description,
+        url = "https://github.com/ccdale/drt",
+        author = "Christopher Allison",
+        author_email = "chris.charles.allison+drt@gmail.com",
+        classifiers = [
+            "Development Status :: 4 - Beta",
+            "Environment :: Console",
+            "Intended Audience :: End Users/Desktop",
+            "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+            "Natural Language :: English",
+            "Operating System :: POSIX :: Linux",
+            "Programming Language :: Python :: 3",
+            "Topic :: Multimedia :: Video :: Conversion",
+            "Topic :: System :: Archiving",
+            "Topic :: System :: Archiving :: Backup",
+            "Topic :: System :: Archiving :: Compression",
+            "Topic :: System :: Archiving :: Mirroring",
+            "Topic :: Utilities"
+            ],
+        keywords = "dvd copying ripping conversion",
+        packages = ["drt"],
+        project_urls = {
+            "Source": "https://github.com/ccdale/drt",
+            "Bug Reports": "https://github.com/ccdale/drt/issues"
+            }
+        )
