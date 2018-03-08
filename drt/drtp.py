@@ -81,45 +81,47 @@ log.addHandler(terminal)
 args = docopt(__doc__, version=__version__)
 log.debug("{}".format(args))
 
-exitcode = 0
+def main(args):
+    if args["--allsaved"]:
+        # all saved dvds
+        dvdp = DVDProcess()
+        dvdp.readSavedDir()
+        if len(dvdp.saved) > 0:
+            # process them all
+            for sdvd in dvdp.saved:
+                dvdp.processSaved(sdvd.name)
+            dvdp.run()
 
-if args["--allsaved"]:
-    # all saved dvds
-    dvdp = DVDProcess()
-    dvdp.readSavedDir()
-    if len(dvdp.saved) > 0:
-        # process them all
-        for sdvd in dvdp.saved:
-            dvdp.processSaved(sdvd.name)
+    if args["--first"]:
+        # first saved dvd
+        dvdp = DVDProcess()
+        dvdp.readSavedDir()
+        if len(dvdp.saved) > 0:
+            dvdp.processSaved(dvdp.saved[0].name)
+            dvdp.run()
+
+    if args["--incoming"]:
+        # read raw dvds
+        dvdp = DVDProcess()
+        dvdp.readIncomingDir()
         dvdp.run()
 
-if args["--first"]:
-    # first saved dvd
-    dvdp = DVDProcess()
-    dvdp.readSavedDir()
-    if len(dvdp.saved) > 0:
-        dvdp.processSaved(dvdp.saved[0].name)
+    if args["--listsaved"]:
+        dvdp = DVDProcess()
+        dvdp.showSaved()
+
+    if len(args["--saved"]) > 0:
+        # selective process of saved dvds
+        # docopt appears to have a bug with multiple items, this mitigates it
+        # see https://github.com/docopt/docopt/issues/134
+        snames = []
+        for name in args["--saved"]:
+            if name not in snames:
+                snames.append(name)
+        dvdp = DVDProcess()
+        for sname in snames:
+            dvdp.processSaved(sname)
         dvdp.run()
 
-if args["--incoming"]:
-    # read raw dvds
-    dvdp = DVDProcess()
-    dvdp.readIncomingDir()
-    dvdp.run()
-
-if args["--listsaved"]:
-    dvdp = DVDProcess()
-    dvdp.showSaved()
-
-if len(args["--saved"]) > 0:
-    # selective process of saved dvds
-    # docopt appears to have a bug with multiple items, this mitigates it
-    # see https://github.com/docopt/docopt/issues/134
-    snames = []
-    for name in args["--saved"]:
-        if name not in snames:
-            snames.append(name)
-    dvdp = DVDProcess()
-    for sname in snames:
-        dvdp.processSaved(sname)
-    dvdp.run()
+if __name__=="__main__":
+    sys.exit(main(args))

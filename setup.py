@@ -63,8 +63,8 @@ setup(
         python_requires = ">=3",
         entry_points ={
             "console_scripts": [
-                "dvdcopy = drt.py",
-                "dvdprocess = drtp.py"
+                "dvdcopy = drt.drt:main",
+                "dvdprocess = drt.drtp:main"
                 ]
             }
         )
