@@ -7,6 +7,17 @@ DRT is optimised for TV series based DVD ripping.
 
 There is a config file at `~/.config/drt.yaml`.
 
+## Installing ##
+This is still in beta, if you want to test it use a virtualenv, vis:
+
+```
+mkdir drt
+cd drt
+mkvirtualenv --system-site-packages --python=/usr/bin/python3 drt
+pip install drt
+dvdprocess -v
+```
+
 ## dvdcopy ##
 A small python program that uses dvdbackup to copy the DVD to your hard disc.
 When run, it asks for a name for the DVD.  This is how it will be known to `dvdprocess`.
