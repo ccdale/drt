@@ -4,4 +4,5 @@ dev:
 		   buildn=$$(( buildn + 1 ));\
 		   sed -i "/buildv =/s/[0-9]\+/$$buildn/" $(vfn)
 	git add $(vfn)
+	git commit -m "bumping build version"
 	pip install -e .
