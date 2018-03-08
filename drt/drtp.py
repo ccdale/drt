@@ -24,6 +24,7 @@ part of the drt package.
 Usage:
     dvdprocess
     dvdprocess --help
+    dvdprocess -v
     dvdprocess --version
     dvdprocess --allsaved
     dvdprocess -A
@@ -44,17 +45,19 @@ Options:
                             if no options supplied.
     -s --saved SAVEDNAME    process the saved DVD for SAVEDNAME, can be repeated.
     -S --first              process the first saved DVD and exit.
-    --version               version info.
+    -v --version            version info.
 
 Notes:
     Process module of drt application
+
+    dvdprocess on it's own will read the incoming directory and start the naming process.
 
     Reads a copied dvd directory.
     Produces an info file.
     Allows user to name the dvd and assign episode numbers and names to the tracks.
     Allows user to select which tracks to process.
     Allows user to toggle the burning in of subtitles.
-    Allows user to save the edited data for later processing.
+    Allows user to save the edited data for processing at a later time.
 """
 
 
