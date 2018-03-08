@@ -80,6 +80,7 @@ class DVDProcess(object):
                     dvd.showTracks()
                     if first:
                         dvd.editMe()
+                        dvd.showTracks()
                         first = False
                     val = self.fs.askMe("edit [d]vd, edit [t]racks, [s]ave, s[k]ip, [o]k", "o")
                     if len(val) == 0:
