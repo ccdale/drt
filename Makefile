@@ -8,9 +8,11 @@ dev:
 	pip install -e .
 
 sdist:
+	rm -rf dist/
+	rm -rf build/
 	python setup.py sdist
 
-bdist:
+bdist: sdist
 	python setup.py bdist_wheel
 
 upload: bdist
