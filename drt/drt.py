@@ -52,7 +52,6 @@ def main():
     outputdir = cfg["outputdir"]
     fs = FileSystem()
     tmpdir = cfg["tmpdir"]
-    dvdname = os.path.basename(arg[1]).replace(" ", "_")
     tmp = fs.askMe("Dvd Name", dvdname)
     if len(tmp) > 0:
         dvdname = tmp
