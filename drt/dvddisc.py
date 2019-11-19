@@ -30,7 +30,9 @@ log = logging.getLogger(__name__)
 
 
 class DVDDisc(object):
-    def __init__(self, name, path, infodir, outputdir, handbrake, savedir, shortlen=300):
+    def __init__(
+        self, name, path, infodir, outputdir, handbrake, savedir, shortlen=300
+    ):
         self.name = name
         self.startepisode = 1
         self.seriesid = 1
@@ -48,7 +50,7 @@ class DVDDisc(object):
 
     def saveMe(self):
         try:
-            with open(self.savefn,"wb") as sfn:
+            with open(self.savefn, "wb") as sfn:
                 pickle.dump(self, sfn, pickle.HIGHEST_PROTOCOL)
             os.rename(self.path, "{}/{}".format(self.savepath, self.name))
         except Exception as e:
@@ -69,7 +71,9 @@ class DVDDisc(object):
 
     def edittracks(self):
         self.showTracks()
-        val = self.askMe("edit (s)elected tracks, edit (b)urnin subtitles, edit track (n)ames", "")
+        val = self.askMe(
+            "edit (s)elected tracks, edit (b)urnin subtitles, edit track (n)ames", ""
+        )
         if len(val) > 0:
             if val == "s":
                 self.editSelected()
@@ -150,12 +154,16 @@ class DVDDisc(object):
                         trk = self.getTrack(tn)
                         trk.title = val
                 except ValueError as e:
-                    print("golly, please at least TRY to read the prompt, enter a NUMBER or 'e'")
+                    print(
+                        "golly, please at least TRY to read the prompt, enter a NUMBER or 'e'"
+                    )
             else:
                 exitfunc = True
 
     def makeInfo(self):
+        print("making info")
         cmd = "{} -i {} -t 0 >{} 2>&1".format(self.handbrake, self.path, self.infofn)
+        print("cmd: {}".format(cmd))
         os.system(cmd)
         self.alltracks = []
         xinfo = DVDInfo(self.infofn, shortlen=self.shortlen)
@@ -172,7 +180,7 @@ class DVDDisc(object):
         slang = "none"
         an = len(track.audios)
         sn = len(track.subts)
-        if an >0 and sn >0:
+        if an > 0 and sn > 0:
             alang = track.audios[0].lang
             slang = track.subts[0].lang
             if alang != slang:
@@ -183,7 +191,11 @@ class DVDDisc(object):
         if self.seriesid == -1:
             return self.seriesname
         else:
-            return "{} S0{}".format(self.seriesname, self.seriesid) if self.seriesid < 10 else "{} S{}".format(self.seriesname, self.seriesid)
+            return (
+                "{} S0{}".format(self.seriesname, self.seriesid)
+                if self.seriesid < 10
+                else "{} S{}".format(self.seriesname, self.seriesid)
+            )
 
     def setStartingEpisodeNumber(self, episodenum):
         self.startepisode = int(episodenum)
@@ -204,9 +216,12 @@ class DVDDisc(object):
                 track.fname = "{} {}".format(self.name, track.number)
 
     def makeMp4(self, track):
-        preset = "Fire TV 1080p30 Surround"
+        # preset = "Fire TV 1080p30 Surround"
+        preset = "Fast 1080p30"
         burninopts = "--subtitle-lang-list eng --all-subtitles"
-        cmd = "{} -i {} -t {} -Z '{}' ".format(self.handbrake, self.path, track.number, preset)
+        cmd = "{} -i {} -t {} -Z '{}' ".format(
+            self.handbrake, self.path, track.number, preset
+        )
         if track.burnin:
             cmd += "{} ".format(burninopts)
         fname = "{}/{}".format(self.outputdir, track.fname)
@@ -215,9 +230,9 @@ class DVDDisc(object):
             tname = "{} {}".format(track.fname, track.title)
             fname += " {}".format(track.title)
         fname += ".m4v"
-        cmd += "-o \"{}\"".format(fname)
+        cmd += '-o "{}"'.format(fname)
         logfile = self.logdir + "/{}.handbrake.log".format(tname)
-        cmd += " >\"{}\" 2>&1".format(logfile)
+        cmd += ' >"{}" 2>&1'.format(logfile)
         print("processing track {}".format(track.number))
         print("cmd: {}".format(cmd))
         os.system(cmd)

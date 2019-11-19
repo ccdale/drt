@@ -25,25 +25,26 @@ import logging
 
 log = logging.getLogger(__name__)
 
+
 class ConfigFile(object):
     def __init__(self):
         defaultcfg = {
-                "device": "/dev/sr0",
-                "rootdir": "~/Videos/dvd",
-                "handbrake": "/usr/bin/HandBrakeCLI",
-                "dvdbackup": "/usr/bin/dvdbackup",
-                "eject": "/usr/bin/eject",
-                "shortrack": 300
-                }
+            "device": "/dev/sr0",
+            "rootdir": "~/Videos/dvd",
+            "handbrake": "/usr/bin/HandBrakeCLI",
+            "dvdbackup": "/usr/bin/dvdbackup",
+            "eject": "/usr/bin/eject",
+            "shortrack": 300,
+        }
         defaultnames = {
-                "dvdoutput": "output",
-                "outputdir": "incoming",
-                "tmpdir": "bare",
-                "completeddir": "processed",
-                "saveddir": "saved",
-                "infodir": "info",
-                "logsdir": "logs"
-                }
+            "dvdoutput": "output",
+            "outputdir": "incoming",
+            "tmpdir": "bare",
+            "completeddir": "processed",
+            "saveddir": "saved",
+            "infodir": "info",
+            "logsdir": "logs",
+        }
         fs = FileSystem()
         self.cfgfn = fs.absPath("~/.config/drt.yaml")
         if fs.fileExists(self.cfgfn):
@@ -78,16 +79,20 @@ class ConfigFile(object):
         for fn in searchfns:
             if fs.fileExists(fn):
                 found = fn
-                break;
+                break
         return found
 
     def readConfig(self):
         try:
-            with open(self.cfgfn, 'r') as ymlfn:
-                self.cfg = yaml.load(ymlfn)
+            with open(self.cfgfn, "r") as ymlfn:
+                self.cfg = yaml.load(ymlfn, Loader=yaml.SafeLoader)
             self.OK = True
         except Exception as e:
-            log.error("An error occurred reading config file {}, exception was {}".format(self.cfgfn, e))
+            log.error(
+                "An error occurred reading config file {}, exception was {}".format(
+                    self.cfgfn, e
+                )
+            )
 
     def writeConfig(self):
         fs = FileSystem()
@@ -96,7 +101,11 @@ class ConfigFile(object):
             with open(self.cfgfn, "w") as ymlfn:
                 yaml.dump(self.cfg, ymlfn)
         except Exception as e:
-            log.error("An error occurred writing config file {}, exception was {}".format(self.cfgfn, e))
+            log.error(
+                "An error occurred writing config file {}, exception was {}".format(
+                    self.cfgfn, e
+                )
+            )
 
     def getCfg(self):
         return self.cfg
