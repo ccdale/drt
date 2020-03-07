@@ -31,7 +31,15 @@ log = logging.getLogger(__name__)
 
 class DVDDisc(object):
     def __init__(
-        self, name, path, infodir, outputdir, handbrake, savedir, shortlen=300
+        self,
+        name,
+        path,
+        infodir,
+        outputdir,
+        handbrake,
+        savedir,
+        shortlen=300,
+        preset="H.265 MKV 720p30",
     ):
         self.name = name
         self.startepisode = 1
@@ -46,6 +54,7 @@ class DVDDisc(object):
         self.savepath = savedir
         self.savefn = "{}/{}.saved".format(self.savepath, self.name)
         self.shortlen = shortlen
+        self.preset = preset
         self.makeInfo()
 
     def saveMe(self):
@@ -217,7 +226,11 @@ class DVDDisc(object):
 
     def makeMp4(self, track):
         # preset = "Fire TV 1080p30 Surround"
-        preset = "Fast 1080p30"
+        # preset = "Fast 1080p30"
+        try:
+            preset = self.preset
+        except AttributeError:
+            preset = "H.265 MKV 720p30"
         burninopts = "--subtitle-lang-list eng --all-subtitles"
         cmd = "{} -i {} -t {} -Z '{}' ".format(
             self.handbrake, self.path, track.number, preset

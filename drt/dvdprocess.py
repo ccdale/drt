@@ -43,6 +43,7 @@ class DVDProcess(object):
         self.infodir = cfg["infodir"]
         self.handbrake = cfg["handbrake"]
         self.shortlen = cfg["shorttrack"]
+        self.preset = cfg["preset"]
         self.dvds = []
         self.saved = []
 
@@ -60,7 +61,9 @@ class DVDProcess(object):
         with os.scandir(self.dvdsavedir) as pt:
             for item in pt:
                 if self.fs.dirExists(item.path):
-                    self.saved.append(SavedDvd(item.name, item.path, self.incomingdir, self.processed))
+                    self.saved.append(
+                        SavedDvd(item.name, item.path, self.incomingdir, self.processed)
+                    )
 
     def showSaved(self):
         if len(self.saved) == 0:
@@ -71,8 +74,16 @@ class DVDProcess(object):
     def readIncomingDir(self):
         with os.scandir(self.incomingdir) as pt:
             for item in pt:
-                dvd = DVDDisc(item.name, item.path, self.infodir, self.outputdir,
-                        self.handbrake, self.dvdsavedir, shortlen=self.shortlen)
+                dvd = DVDDisc(
+                    item.name,
+                    item.path,
+                    self.infodir,
+                    self.outputdir,
+                    self.handbrake,
+                    self.dvdsavedir,
+                    shortlen=self.shortlen,
+                    preset=self.preset,
+                )
                 instone = False
                 first = True
                 while not instone:
@@ -83,14 +94,20 @@ class DVDProcess(object):
                         dvd.showMe()
                         dvd.showTracks()
                         first = False
-                    val = self.fs.askMe("edit [d]vd, edit [t]racks, [s]ave, s[k]ip, [o]k", "o")
+                    val = self.fs.askMe(
+                        "edit [d]vd, edit [t]racks, [s]ave, s[k]ip, [o]k", "o"
+                    )
                     if len(val) == 0:
-                        val="o"
+                        val = "o"
                     if val == "o":
                         instone = True
                         acn = len(dvd.alltracks)
                         ccn = len(dvd.selected)
-                        log.info("adding DVD: {} with {} tracks, {} of which are selected".format(dvd.name, acn, ccn))
+                        log.info(
+                            "adding DVD: {} with {} tracks, {} of which are selected".format(
+                                dvd.name, acn, ccn
+                            )
+                        )
                         self.dvds.append(dvd)
                     elif val == "d":
                         dvd.editMe()
@@ -103,7 +120,6 @@ class DVDProcess(object):
                         instone = True
                     else:
                         dvd.editMe()
-
 
     def addZero(self, num):
         ret = "{}".format(num)
